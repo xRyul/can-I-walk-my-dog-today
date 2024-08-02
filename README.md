@@ -10,12 +10,12 @@
 
 ---
 
-Dogs overheating can be a serious issue, leading to heatstroke and other health complications. 
+Dogs overheating can be a fatal. In the UK, exertional heat-related illness affects more dogs (74.2%), and kills more dogs, than confinement in a hot vehicle (5.2%).
 
 ## Key Factors Affecting a Dog's Body Temperature
 
 1. **Ambient Temperature**: High temperatures can quickly increase a dog's body heat, especially during exercise.
-2. **Humidity**: High humidity levels make it harder for dogs to cool down through panting, increasing the risk of overheating.
+2. **Humidity**: Humidity is one of the most difficult aspects of heat stroke, as it will many times come with overcast conditions that lead many to believe that it is safe to exercise their dogs outside. The buildup of humidity generally corresponds with slightly cooler temperatures, making owners believe that is is now cool enough to walk or exercise their dogs outside. But usually it is even worse than the heat. 
 3. **Exercise Intensity**: Physical activity generates body heat, which can compound the effects of hot and humid weather.
 
 ## How It Works
@@ -29,13 +29,14 @@ Dogs overheating can be a serious issue, leading to heatstroke and other health 
 ## To Do
 
 - [ ] Implement breed-specific recommendations
+- [ ] Look into heat acclimation
 - [ ] Incorporate findings that male dogs have a higher chance of heatstroke
 - [ ] Factor in coat color, as dark-coated dogs have a higher chance of heatstroke
 - [ ] Add a Calendar View to plan safe walking times over the coming days based on weather forecasts
 - [ ] Provide alternative walking times, suggesting cooler parts of the day if the current conditions are too hot
 - [ ] Allow users to input their dog's typical activity level for more precise recommendations
 - [ ] Tailor advice based on the age of the dog
-- [ ] Include an option to factor in specific health conditions that might increase susceptibility to heat-related issues
+- [ ] Include an option to factor in specific health conditions
 - [ ] Implement real-time alerts for sudden changes in weather that could impact planned walks
 - [ ] Integrate an interactive map showing nearby shaded parks, water stations, and dog-friendly cooling areas
 - [ ] Include educational resources on recognizing signs of heat stress and first aid steps for heatstroke
@@ -47,3 +48,6 @@ Dogs overheating can be a serious issue, leading to heatstroke and other health 
 - [Too Hot to Run](https://www.canicross.org.uk/post/too-hot-to-run)
 - [Temperature & Humidity Reference Guide](https://assa.dog/wp-content/uploads/2017/06/Temp-Humdity-Reference-Guide-v1.0-May-2017.pdf)
 - [Beginners Guide](https://www.assa.dog/wp-content/uploads/2022/09/assa_beginners_guide_v2022.pdf)
+- [Dogs Don’t Die Just in Hot Cars—Exertional Heat-Related Illness (Heatstroke) Is a Greater Threat to UK Dogs](https://www.mdpi.com/2076-2615/10/8/1324) by Emily J. Hall, Anne J. Carter and Dan G. O'Neill.
+- [How Humidity Can Lead To Heat Stroke In Dogs](https://rundawg.com/how-humidity-can-lead-to-heat-stroke-in-dogs/) by Run Dawg, 2022
+- [Canine Heat Stroke](https://www.iowaveterinaryspecialties.com/student-scholars/canine-heat-stroke-literature-review) by Victoria T 2017
