@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Can I Walk My Dog Today?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 5px 10px;
+        }
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Can I Walk My Dog Today?</h1>
+        <input type="text" id="location" placeholder="Enter city name">
+        <button onclick="checkWeather()">Check</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function checkWeather() {
+            const location = document.getElementById('location').value.trim();
+            const resultDiv = document.getElementById('result');
+
+            if (!location) {
+                resultDiv.innerHTML = 'Please enter a location';
+                return;
+            }
+
+            try {
+                const coordinates = await getCoordinates(location);
+                const weatherData = await getWeatherData(coordinates);
+                const heatIndex = calculateHeatIndex(weatherData.temperature, weatherData.humidity);
+                const safeTime = getSafeOutdoorTime(heatIndex);
+
+                resultDiv.innerHTML = `
+                    <p>Location: ${location}</p>
+                    <p>Temperature: ${weatherData.temperature.toFixed(1)}°C</p>
+                    <p>Humidity: ${weatherData.humidity.toFixed(1)}%</p>
+                    <p>Heat Index: ${heatIndex.toFixed(1)}</p>
+                    <p>Safe Walking Time: ${safeTime}</p>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = 'An error occurred. Please try again.';
+                console.error(error);
+            }
+        }
+
+        async function getCoordinates(location) {
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`);
+            const data = await response.json();
+            if (data.length === 0) throw new Error('Location not found');
+            return { lat: data[0].lat, lon: data[0].lon };
+        }
+
+        async function getWeatherData({ lat, lon }) {
+            const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relativehumidity_2m`);
+            const data = await response.json();
+            const currentHour = new Date().getHours();
+            return {
+                temperature: data.current_weather.temperature,
+                humidity: data.hourly.relativehumidity_2m[currentHour]
+            };
+        }
+
+        function calculateHeatIndex(tempCelsius, humidity) {
+            return tempCelsius * humidity;
+        }
+
+        function getSafeOutdoorTime(heatIndex) {
+            if (heatIndex < 1000) return '3 hours';
+            if (heatIndex < 1200) return '2 hours';
+            if (heatIndex < 1400) return '1 hour';
+            if (heatIndex < 1600) return '30 minutes';
+            if (heatIndex < 1800) return '15 minutes';
+            return 'No walks';
+        }
+    </script>
+</body>
+</html>
