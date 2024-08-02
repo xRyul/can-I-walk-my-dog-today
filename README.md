@@ -29,8 +29,14 @@ Dogs overheating can be a serious issue, leading to heatstroke and other health 
 - Implement breed specific recommendaitons
 - According to some studies male dogs have higher chance of heatstroke.
 - Coat. According to some studies dark-coated dogs have higher chance of heatstroke.
-- Add Calendar view
-- Add Recommended Walking Times as an alternative, if it is too hot.
+- Calendar View: Add a feature allowing users to view and plan safe walking times over the coming days based on weather forecasts.
+- Recommended Walking Times: Provide alternative walking times, suggesting cooler parts of the day if the current conditions are too hot.
+- Activity Level Customization: Allow users to input their dog's typical activity level to get more precise recommendations based on their dog's energy needs and heat tolerance.
+- Age-Specific Recommendations: Tailor advice based on the age of the dog, as puppies and senior dogs may have different vulnerabilities to heat.
+- Health Condition Considerations: Include an option to factor in specific health conditions (e.g., brachycephalic breeds, overweight dogs) that might make a dog more susceptible to heat-related issues.
+- Real-Time Alerts: Implement push notifications or email alerts for sudden changes in weather that could impact planned walks.
+- Interactive Map: Integrate an interactive map showing nearby shaded parks, water stations, and dog-friendly cooling areas.
+- Heat Stress Signs Education: Include educational resources on recognizing signs of heat stress and first aid steps for heatstroke
 
 
 
