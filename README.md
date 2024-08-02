@@ -5,19 +5,41 @@ Can I walk my dog today?
 
 Live at: https://xryul.github.io/can-I-walk-my-dog-today/
 
-Dogs overheating can be a serious issue. 
 
- factors that affect a dog's body temperature.
+Dogs overheating can be a serious issue, leading to heatstroke and other health complications. 
+
+### Key Factors Affecting a Dog's Body Temperature
+
+1. **Ambient Temperature**: High temperatures can quickly increase a dog's body heat, especially during exercise.
+2. **Humidity**: High humidity levels make it harder for dogs to cool down through panting, increasing the risk of overheating.
+3. **Exercise Intensity**: Physical activity generates body heat, which can compound the effects of hot and humid weather.
+
+
+## How It Works
+
+1. **User Input**: Enter the city name into the input field.
+2. **Fetch Coordinates**: The application fetches the geographical coordinates of the city using the OpenStreetMap API.
+3. **Fetch Weather Data**: It retrieves current temperature and humidity data from the Open-Meteo API.
+4. **Calculate Heat Index**: The application calculates the heat index to assess the combined effect of temperature and humidity.
+5. **Safe Walking Time Recommendation**: Based on the heat index, the application provides a recommendation on how long it is safe to walk your dog.
+
+
+## To do:
+
+- Implement breed specific recommendaitons
+- According to some studies male dogs have higher chance of heatstroke.
+- Coat. According to some studies dark-coated dogs have higher chance of heatstroke.
+- Add Calendar view
+- Add Recommended Walking Times as an alternative, if it is too hot.
 
 
 
-References:
+## References:
 - Post-exercise management of exertional hyperthermia in dogs participating in dog sport (canicross) events in the UK . Anne J. Carter, Emily J. Hall, Jude Bradbury,Sian Beard, Sophie Gilbert, Dominic Barfield, Dan G. O'Neill. https://www.sciencedirect.com/science/article/pii/S0306456524000457
 
 - Investigating factors affecting the body temperature of dogs competing in cross country
 (canicross) races in the UK. Anne Carter, Emily J. Hall. https://heatstroke.dog/wp-content/uploads/2018/06/final-canicross-canine-temperatures.pdf
 
-- https://www.canicross.org.uk/post/too-hot-to-run
-
-- https://assa.dog/wp-content/uploads/2017/06/Temp-Humdity-Reference-Guide-v1.0-May-2017.pdf
-- https://www.assa.dog/wp-content/uploads/2022/09/assa_beginners_guide_v2022.pdf
+- [Too Hot to Run](https://www.canicross.org.uk/post/too-hot-to-run)
+- [Temperature & Humidity Reference Guide](https://assa.dog/wp-content/uploads/2017/06/Temp-Humdity-Reference-Guide-v1.0-May-2017.pdf)
+- [Beginners Guide](https://www.assa.dog/wp-content/uploads/2022/09/assa_beginners_guide_v2022.pdf)
