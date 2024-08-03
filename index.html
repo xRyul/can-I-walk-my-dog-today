@@ -67,7 +67,7 @@
 
         #result {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem;
         }
@@ -77,21 +77,37 @@
             border-radius: 8px;
             padding: 1rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .metric-card:hover {
             transform: translateY(-5px);
         }
 
+        .metric-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .metric-title {
             font-weight: bold;
-            margin-bottom: 0.5rem;
         }
 
         .metric-value {
             font-size: 1.2rem;
             color: var(--primary-color);
+        }
+
+        .metric-chart {
+            display: none;
+            margin-top: 1rem;
+            height: 200px;
+        }
+
+        .metric-card.expanded .metric-chart {
+            display: block;
         }
 
         #weatherMetricsChart {
@@ -152,57 +168,149 @@
                 const walkingAdvice = getWalkingAdvice(weatherData.current.temperature, weatherData.current.humidity);
 
                 resultDiv.innerHTML = `
-                    <div class="metric-card">
-                        <div class="metric-title">Location</div>
-                        <div class="metric-value">${location}</div>
+                    <div class="metric-card" data-metric="temperature">
+                        <div class="metric-content">
+                            <div class="metric-title">Temperature</div>
+                            <div class="metric-value" style="color: ${getColorForTemperature(weatherData.current.temperature)}">${weatherData.current.temperature.toFixed(1)}°C</div>
+                        </div>
+                        <div class="metric-chart"><canvas></canvas></div>
+                    </div>
+                    <div class="metric-card" data-metric="humidity">
+                        <div class="metric-content">
+                            <div class="metric-title">Humidity</div>
+                            <div class="metric-value">${weatherData.current.humidity.toFixed(1)}%</div>
+                        </div>
+                        <div class="metric-chart"><canvas></canvas></div>
+                    </div>
+                    <div class="metric-card" data-metric="heatIndex">
+                        <div class="metric-content">
+                            <div class="metric-title">Heat Index</div>
+                            <div class="metric-value" style="color: ${getColorForTemperature(heatIndex)}">${heatIndex.toFixed(1)}°C</div>
+                        </div>
+                        <div class="metric-chart"><canvas></canvas></div>
+                    </div>
+                    <div class="metric-card" data-metric="heatIndexScore">
+                        <div class="metric-content">
+                            <div class="metric-title">Heat Index Score</div>
+                            <div class="metric-value" style="color: ${getColorForHeatIndexScore(heatIndexScore)}">${heatIndexScore.toFixed(1)}</div>
+                        </div>
+                        <div class="metric-chart"><canvas></canvas></div>
+                    </div>
+                    <div class="metric-card" data-metric="apparentTemperature">
+                        <div class="metric-content">
+                            <div class="metric-title">Apparent Temperature</div>
+                            <div class="metric-value" style="color: ${getColorForTemperature(apparentTemp)}">${apparentTemp.toFixed(1)}°C</div>
+                        </div>
+                        <div class="metric-chart"><canvas></canvas></div>
+                    </div>
+                    <div class="metric-card" data-metric="wbgt">
+                        <div class="metric-content">
+                            <div class="metric-title">WBGT</div>
+                            <div class="metric-value" style="color: ${getColorForTemperature(wbgt)}">${wbgt.toFixed(1)}°C</div>
+                        </div>
+                        <div class="metric-chart"><canvas></canvas></div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-title">Temperature</div>
-                        <div class="metric-value" style="color: ${getColorForTemperature(weatherData.current.temperature)}">${weatherData.current.temperature.toFixed(1)}°C</div>
+                        <div class="metric-content">
+                            <div class="metric-title">Walking Advice</div>
+                            <div class="metric-value">${walkingAdvice}</div>
+                        </div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-title">Humidity</div>
-                        <div class="metric-value">${weatherData.current.humidity.toFixed(1)}%</div>
+                        <div class="metric-content">
+                            <div class="metric-title">Canicross</div>
+                            <div class="metric-value">${canicrossAdvice}</div>
+                        </div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-title">Heat Index</div>
-                        <div class="metric-value" style="color: ${getColorForTemperature(heatIndex)}">${heatIndex.toFixed(1)}°C</div>
+                        <div class="metric-content">
+                            <div class="metric-title">Bikejoring</div>
+                            <div class="metric-value">${bikejoringAdvice}</div>
+                        </div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-title">Heat Index Score</div>
-                        <div class="metric-value" style="color: ${getColorForHeatIndexScore(heatIndexScore)}">${heatIndexScore.toFixed(1)}</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-title">Apparent Temperature</div>
-                        <div class="metric-value" style="color: ${getColorForTemperature(apparentTemp)}">${apparentTemp.toFixed(1)}°C</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-title">WBGT</div>
-                        <div class="metric-value" style="color: ${getColorForTemperature(wbgt)}">${wbgt.toFixed(1)}°C</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-title">Walking Advice</div>
-                        <div class="metric-value">${walkingAdvice}</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-title">Canicross</div>
-                        <div class="metric-value">${canicrossAdvice}</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-title">Bikejoring</div>
-                        <div class="metric-value">${bikejoringAdvice}</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-title">Scooter/Rig Classes</div>
-                        <div class="metric-value">${scooterRigAdvice}</div>
+                        <div class="metric-content">
+                            <div class="metric-title">Scooter/Rig Classes</div>
+                            <div class="metric-value">${scooterRigAdvice}</div>
+                        </div>
                     </div>
                 `;
 
                 createWeatherMetricsChart(weatherData);
+                addCardClickListeners(weatherData);
             } catch (error) {
                 resultDiv.innerHTML = 'An error occurred. Please try again.';
                 console.error(error);
             }
+        }
+
+        function addCardClickListeners(weatherData) {
+            const cards = document.querySelectorAll('.metric-card[data-metric]');
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('expanded');
+                    if (card.classList.contains('expanded')) {
+                        const metric = card.getAttribute('data-metric');
+                        createMetricChart(card.querySelector('.metric-chart canvas'), metric, weatherData);
+                    }
+                });
+            });
+        }
+        
+        function createMetricChart(canvas, metric, weatherData) {
+            const labels = Array.from({length: 24}, (_, i) => `${(new Date().getHours() + i) % 24}:00`);
+            let data;
+
+            switch (metric) {
+                case 'temperature':
+                    data = weatherData.next24Hours.temperature;
+                    break;
+                case 'humidity':
+                    data = weatherData.next24Hours.humidity;
+                    break;
+                case 'heatIndex':
+                    data = weatherData.next24Hours.temperature.map((temp, i) => 
+                        calculateHeatIndex(temp, weatherData.next24Hours.humidity[i])
+                    );
+                    break;
+                case 'heatIndexScore':
+                    data = weatherData.next24Hours.temperature.map((temp, i) => 
+                        calculateHeatIndexScore(temp, weatherData.next24Hours.humidity[i])
+                    );
+                    break;
+                case 'apparentTemperature':
+                    data = weatherData.next24Hours.temperature.map((temp, i) => 
+                        calculateApparentTemperature(temp, weatherData.next24Hours.humidity[i])
+                    );
+                    break;
+                case 'wbgt':
+                    data = weatherData.next24Hours.temperature.map((temp, i) => 
+                        calculateWBGT(temp, weatherData.next24Hours.humidity[i], weatherData.next24Hours.windSpeed[i], weatherData.next24Hours.solarRadiation[i])
+                    );
+                    break;
+            }
+
+            new Chart(canvas, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: metric,
+                        data: data,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
         }
 
         async function getCoordinates(location) {
