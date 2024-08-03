@@ -476,7 +476,7 @@
             const H_ratio = humidity / H_max;
 
             const heatIndexPercentage = ((T_ratio + H_ratio) / 2) * 100;
-            return Math.min(heatIndexPercentage, 100); // Cap at 100%
+            return heatIndexPercentage;
         }
 
         function calculateWBGT(tempCelsius, humidity, windSpeed, solarRadiation) {
