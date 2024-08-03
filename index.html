@@ -468,9 +468,31 @@
         }
 
         function calculateHeatIndex(tempCelsius, humidity) {
+            // Convert Celsius to Fahrenheit
             const tempF = (tempCelsius * 9/5) + 32;
-            const hi = 0.5 * (tempF + 61.0 + ((tempF - 68.0) * 1.2) + (humidity * 0.094));
-            return (hi - 32) * 5/9; // Convert back to Celsius
+            
+            let hi;
+
+            // Simple formula for lower temperatures
+            if (tempF < 80) {
+                hi = 0.5 * (tempF + 61.0 + ((tempF - 68.0) * 1.2) + (humidity * 0.094));
+            } else {
+                // Rothfusz regression for higher temperatures
+                hi = -42.379 + 2.04901523 * tempF + 10.14333127 * humidity
+                    - 0.22475541 * tempF * humidity - 6.83783e-3 * tempF**2
+                    - 5.481717e-2 * humidity**2 + 1.22874e-3 * tempF**2 * humidity
+                    + 8.5282e-4 * tempF * humidity**2 - 1.99e-6 * tempF**2 * humidity**2;
+
+                // Adjustments for extreme conditions
+                if (humidity < 13 && tempF >= 80 && tempF <= 112) {
+                    hi -= ((13 - humidity) / 4) * Math.sqrt((17 - Math.abs(tempF - 95)) / 17);
+                } else if (humidity > 85 && tempF >= 80 && tempF <= 87) {
+                    hi += ((humidity - 85) / 10) * ((87 - tempF) / 5);
+                }
+            }
+
+            // Convert the result back to Celsius
+            return (hi - 32) * 5/9;
         }
 
         function calculateHeatIndexScore(tempCelsius, humidity) {
@@ -489,12 +511,19 @@
         }
 
         function calculateWBGT(tempCelsius, humidity, windSpeed, solarRadiation) {
+            // Calculate vapor pressure
             const e = (humidity / 100) * 6.105 * Math.exp((17.27 * tempCelsius) / (237.7 + tempCelsius));
-            const wetBulbTemp = tempCelsius * Math.atan(0.151977 * Math.pow(humidity + 8.313659, 0.5)) + 
-                                Math.atan(tempCelsius + humidity) - Math.atan(humidity - 1.676331) + 
-                                0.00391838 * Math.pow(humidity, 1.5) * Math.atan(0.023101 * humidity) - 4.686035;
-            const globeTemp = tempCelsius + (0.02 * solarRadiation) - (0.4 * windSpeed);
-            return 0.7 * wetBulbTemp + 0.2 * globeTemp + 0.1 * tempCelsius;
+            
+            // Estimate natural wet-bulb temperature
+            const Tw = tempCelsius * Math.atan(0.151977 * Math.pow(humidity + 8.313659, 0.5)) + 
+                    Math.atan(tempCelsius + humidity) - Math.atan(humidity - 1.676331) + 
+                    0.00391838 * Math.pow(humidity, 1.5) * Math.atan(0.023101 * humidity) - 4.686035;
+            
+            // Estimate globe temperature
+            const Tg = tempCelsius + (0.02 * solarRadiation) - (0.4 * windSpeed);
+            
+            // Calculate WBGT
+            return 0.7 * Tw + 0.2 * Tg + 0.1 * tempCelsius;
         }
 
         function getActivityAdvice(apparentTemp, wbgt, activity) {
@@ -728,8 +757,6 @@
             if (tempF >= 85) return 120;
             return 180;
         }
-
-
 
     </script>
 </body>
