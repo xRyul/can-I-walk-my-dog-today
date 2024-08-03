@@ -46,6 +46,7 @@ And provide some generic advice based on ASSA Humidity Reference Chart weather y
 
 ## To Do
 
+- Add explanation for color coding and progress bars under each metric.
 - Activity Advice. Current MAX advice is to simply not to harness your dogs, but if conditions are extreme dogs hsould not be exercised at all in paticualr Bikejoring/Scooter
 - Time Locale. Show time at location. Calculate all graphs based on destination time. 
 - Projecting becomeing too large. Split and move into Typescript? Look into React, Tailwinds, Next? Look into minification and speed up load time, reduced API calls etc.
