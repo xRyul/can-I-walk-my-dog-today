@@ -1,7 +1,7 @@
 # Can I Walk My Dog Today?
 
 <p align="center">
-  <img width="364" alt="Screenshot 2024-08-02 165846" src="https://github.com/user-attachments/assets/b503659f-9ea2-46b6-aab5-00f3ab5cb81b">
+  <img width="640" alt="Screenshot 2024-08-02 165846" src="https://github.com/user-attachments/assets/e6867978-daa7-4d1c-9a6e-40cfc34bb44d">
 </p>
 
 <p align="center">
@@ -10,7 +10,17 @@
 
 ---
 
-Dogs overheating can be a fatal. In the UK, exertional heat-related illness affects more dogs (74.2%), and kills more dogs, than confinement in a hot vehicle (5.2%).
+Overheating in dogs can be a fatal. In the UK, exertional heat-related illness (HRI) affects (74.2%), and kills more dogs, than confinement in a hot vehicle (5.2%).
+
+Simply relying on 1 metric (ambient temperature) usually is not enough to determine how much or how vigorously you can exercise your dog. Thus this one-page-website aims to combat that, by providing multiple other factors. As well as, generic walking times based on various other sources.
+
+- Humidity
+- Heat Index
+- Heat Index Score
+- Apparent Temperature
+- WBGT (temp. Celsius, humidity, wind speed, solar radiation)
+
+And provide some generic advice based on ASSA Humidity Reference Chart weather you can do Canicross, Bikejorring or Scooter/Rig Classes.
 
 ## Key Factors Affecting a Dog's Body Temperature
 
@@ -20,11 +30,6 @@ Dogs overheating can be a fatal. In the UK, exertional heat-related illness affe
 
 ## How It Works
 
-1. **User Input**: Enter the city name into the input field.
-2. **Fetch Coordinates**: The application fetches the geographical coordinates of the city using the OpenStreetMap API.
-3. **Fetch Weather Data**: It retrieves current temperature and humidity data from the Open-Meteo API.
-4. **Calculate Heat Index**: The application calculates the heat index to assess the combined effect of temperature and humidity.
-5. **Safe Walking Time Recommendation**: Based on the heat index, the application provides a recommendation on how long it is safe to walk your dog.
 
 ## To Do
 
