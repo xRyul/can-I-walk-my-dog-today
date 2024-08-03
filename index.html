@@ -257,7 +257,7 @@
                                     <div class="metric-title"><i class="fas fa-fire"></i> Heat Index</div>
                                     <div class="metric-value" style="color: ${getColorForTemperature(heatIndex)}">${heatIndex.toFixed(1)}°C</div>
                                 </div>
-                                <div class="metric-description">How hot it feels considering humidity</div>
+                                <div class="metric-description">Measures how hot it feels considering humidity, best for shaded areas with light winds</div>
                                 <div class="visual-indicator"><div class="visual-indicator-bar" style="width: ${(heatIndex / 50) * 100}%; background-color: ${getColorForTemperature(heatIndex)}"></div></div>
                                 <div class="metric-preview"></div>
                                 <div class="metric-chart"><canvas></canvas></div>
@@ -267,7 +267,7 @@
                                     <div class="metric-title"><i class="fas fa-thermometer"></i> Apparent Temperature</div>
                                     <div class="metric-value" style="color: ${getColorForTemperature(apparentTemp)}">${apparentTemp.toFixed(1)}°C</div>
                                 </div>
-                                <div class="metric-description">How warm it feels considering all factors</div>
+                                <div class="metric-description">Estimates perceived temperature, considering humidity and wind speed</div>
                                 <div class="visual-indicator"><div class="visual-indicator-bar" style="width: ${(apparentTemp / 50) * 100}%; background-color: ${getColorForTemperature(apparentTemp)}"></div></div>
                                 <div class="metric-preview"></div>
                                 <div class="metric-chart"><canvas></canvas></div>
@@ -277,7 +277,7 @@
                                     <div class="metric-title"><i class="fas fa-globe-americas"></i> WBGT</div>
                                     <div class="metric-value" style="color: ${getColorForTemperature(wbgt)}">${wbgt.toFixed(1)}°C</div>
                                 </div>
-                                <div class="metric-description">Wet Bulb Globe Temperature (heat stress index)</div>
+                                <div class="metric-description">Measures heat stress in direct sunlight, considering temperature, humidity, wind, and solar radiation</div>
                                 <div class="visual-indicator"><div class="visual-indicator-bar" style="width: ${(wbgt / 50) * 100}%; background-color: ${getColorForTemperature(wbgt)}"></div></div>
                                 <div class="metric-preview"></div>
                                 <div class="metric-chart"><canvas></canvas></div>
@@ -292,7 +292,7 @@
                                     <div class="metric-title"><i class="fas fa-chart-line"></i> Heat Index Score</div>
                                     <div class="metric-value" style="color: ${getColorForHeatIndexScore(heatIndexScore)}">${heatIndexScore.toFixed(1)}</div>
                                 </div>
-                                <div class="metric-description">Composite score of temperature and humidity</div>
+                                <div class="metric-description">Composite score of temperature and humidity, useful for quick assessment</div>
                                 <div class="visual-indicator"><div class="visual-indicator-bar" style="width: ${(heatIndexScore / 2000) * 100}%; background-color: ${getColorForHeatIndexScore(heatIndexScore)}"></div></div>
                                 <div class="metric-preview"></div>
                                 <div class="metric-chart"><canvas></canvas></div>
