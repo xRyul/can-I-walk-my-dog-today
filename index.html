@@ -31,6 +31,10 @@
         .metric {
             font-weight: bold;
         }
+        #weatherMetricsChart {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -40,7 +44,7 @@
         <input type="text" id="location" placeholder="Enter city name">
         <button onclick="checkWeather()">Check</button>
         <div id="result"></div>
-        <canvas id="heatIndexChart" width="400" height="200"></canvas>
+        <canvas id="weatherMetricsChart" width="800" height="400"></canvas>
     </div>
 
     <script>
@@ -80,7 +84,7 @@
                     <p>Scooter/Rig Classes: ${scooterRigAdvice}</p>
                 `;
 
-                createHeatIndexScoreChart(weatherData);
+                createWeatherMetricsChart(weatherData);
             } catch (error) {
                 resultDiv.innerHTML = 'An error occurred. Please try again.';
                 console.error(error);
@@ -230,46 +234,142 @@
             return 'red';
         }
     
-        function createHeatIndexScoreChart(weatherData) {
-            const ctx = document.getElementById('heatIndexChart').getContext('2d');
+        function createWeatherMetricsChart(weatherData) {
+            const ctx = document.getElementById('weatherMetricsChart').getContext('2d');
             const labels = Array.from({length: 24}, (_, i) => `${(new Date().getHours() + i) % 24}:00`);
-            const data = weatherData.next24Hours.temperature.map((temp, i) => 
-                calculateHeatIndexScore(temp, weatherData.next24Hours.humidity[i])
+            
+            const temperatureData = weatherData.next24Hours.temperature;
+            const humidityData = weatherData.next24Hours.humidity;
+            const heatIndexData = temperatureData.map((temp, i) => calculateHeatIndex(temp, humidityData[i]));
+            const apparentTempData = temperatureData.map((temp, i) => calculateApparentTemperature(temp, humidityData[i]));
+            const wbgtData = temperatureData.map((temp, i) => 
+                calculateWBGT(temp, humidityData[i], weatherData.next24Hours.windSpeed[i], weatherData.next24Hours.solarRadiation[i])
             );
+            const heatIndexScoreData = temperatureData.map((temp, i) => calculateHeatIndexScore(temp, humidityData[i]));
+            const walkingAdviceData = temperatureData.map((temp, i) => getWalkingAdviceNumeric(temp, humidityData[i]));
 
             new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
-                    datasets: [{
-                        label: 'Heat Index Score',
-                        data: data,
-                        borderColor: 'rgb(75, 192, 192)',
-                        tension: 0.1
-                    }]
+                    datasets: [
+                        {
+                            label: 'Temperature (°C)',
+                            data: temperatureData,
+                            borderColor: 'rgb(255, 99, 132)',
+                            yAxisID: 'y1',
+                        },
+                        {
+                            label: 'Humidity (%)',
+                            data: humidityData,
+                            borderColor: 'rgb(54, 162, 235)',
+                            yAxisID: 'y2',
+                        },
+                        {
+                            label: 'Heat Index (°C)',
+                            data: heatIndexData,
+                            borderColor: 'rgb(255, 206, 86)',
+                            yAxisID: 'y1',
+                        },
+                        {
+                            label: 'Apparent Temperature (°C)',
+                            data: apparentTempData,
+                            borderColor: 'rgb(75, 192, 192)',
+                            yAxisID: 'y1',
+                        },
+                        {
+                            label: 'WBGT (°C)',
+                            data: wbgtData,
+                            borderColor: 'rgb(153, 102, 255)',
+                            yAxisID: 'y1',
+                        },
+                        {
+                            label: 'Heat Index Score',
+                            data: heatIndexScoreData,
+                            borderColor: 'rgb(255, 159, 64)',
+                            yAxisID: 'y3',
+                        },
+                        {
+                            label: 'Walking Time (minutes)',
+                            data: walkingAdviceData,
+                            borderColor: 'rgb(0, 128, 0)',
+                            yAxisID: 'y4',
+                        }
+                    ]
                 },
                 options: {
                     responsive: true,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    stacked: false,
                     scales: {
-                        y: {
-                            beginAtZero: true,
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Temperature (°C)'
+                            }
+                        },
+                        y2: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Humidity (%)'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        },
+                        y3: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
                             title: {
                                 display: true,
                                 text: 'Heat Index Score'
-                            }
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
                         },
-                        x: {
+                        y4: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
                             title: {
                                 display: true,
-                                text: 'Hour'
-                            }
+                                text: 'Walking Time (minutes)'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
                         }
                     }
                 }
             });
         }
-    
-    
+        
+        function getWalkingAdviceNumeric(tempCelsius, humidity) {
+            const tempF = (tempCelsius * 9/5) + 32;
+            if (tempF >= 105) return 15;
+            if (tempF >= 100 && humidity >= 30) return 15;
+            if (tempF >= 95 && humidity >= 50) return 15;
+            if (tempF >= 90 && humidity >= 60) return 15;
+            if (tempF >= 90 && humidity >= 35) return 60;
+            if (tempF >= 85 && humidity >= 65) return 60;
+            if (tempF >= 90) return 120;
+            if (tempF >= 85) return 120;
+            return 180;
+        }
+
+
+
     </script>
 </body>
 </html>
