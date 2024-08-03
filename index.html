@@ -28,7 +28,11 @@
         #result {
             margin-top: 20px;
         }
+        .metric {
+            font-weight: bold;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
@@ -36,6 +40,7 @@
         <input type="text" id="location" placeholder="Enter city name">
         <button onclick="checkWeather()">Check</button>
         <div id="result"></div>
+        <canvas id="heatIndexChart" width="400" height="200"></canvas>
     </div>
 
     <script>
@@ -51,16 +56,31 @@
             try {
                 const coordinates = await getCoordinates(location);
                 const weatherData = await getWeatherData(coordinates);
-                const heatIndex = calculateHeatIndex(weatherData.temperature, weatherData.humidity);
-                const safeTime = getSafeOutdoorTime(heatIndex);
+                const apparentTemp = calculateApparentTemperature(weatherData.current.temperature, weatherData.current.humidity);
+                const heatIndex = calculateHeatIndex(weatherData.current.temperature, weatherData.current.humidity);
+                const heatIndexScore = calculateHeatIndexScore(weatherData.current.temperature, weatherData.current.humidity);
+                const wbgt = calculateWBGT(weatherData.current.temperature, weatherData.current.humidity, weatherData.current.windSpeed, weatherData.current.solarRadiation);
+
+                const bikejoringAdvice = getActivityAdvice(apparentTemp, wbgt, 'bikejoring');
+                const canicrossAdvice = getActivityAdvice(apparentTemp, wbgt, 'canicross');
+                const scooterRigAdvice = getActivityAdvice(apparentTemp, wbgt, 'scooterRig');
+                const walkingAdvice = getWalkingAdvice(weatherData.current.temperature, weatherData.current.humidity);
 
                 resultDiv.innerHTML = `
                     <p>Location: ${location}</p>
-                    <p>Temperature: ${weatherData.temperature.toFixed(1)}°C</p>
-                    <p>Humidity: ${weatherData.humidity.toFixed(1)}%</p>
-                    <p>Heat Index: ${heatIndex.toFixed(1)}</p>
-                    <p>Safe Walking Time: ${safeTime}</p>
+                    <p>Temperature: <span class="metric" style="color: ${getColorForTemperature(weatherData.current.temperature)}">${weatherData.current.temperature.toFixed(1)}°C</span></p>
+                    <p>Humidity: ${weatherData.current.humidity.toFixed(1)}%</p>
+                    <p>Heat Index: <span class="metric" style="color: ${getColorForTemperature(heatIndex)}">${heatIndex.toFixed(1)}°C</span></p>
+                    <p>Heat Index Score: <span class="metric" style="color: ${getColorForHeatIndexScore(heatIndexScore)}">${heatIndexScore.toFixed(1)}</span></p>
+                    <p>Apparent Temperature: <span class="metric" style="color: ${getColorForTemperature(apparentTemp)}">${apparentTemp.toFixed(1)}°C</span></p>
+                    <p>WBGT: <span class="metric" style="color: ${getColorForTemperature(wbgt)}">${wbgt.toFixed(1)}°C</span></p>
+                    <p>Walking Advice: <span class="metric">${walkingAdvice}</span></p>
+                    <p>Canicross: ${canicrossAdvice}</p>
+                    <p>Bikejoring: ${bikejoringAdvice}</p>
+                    <p>Scooter/Rig Classes: ${scooterRigAdvice}</p>
                 `;
+
+                createHeatIndexScoreChart(weatherData);
             } catch (error) {
                 resultDiv.innerHTML = 'An error occurred. Please try again.';
                 console.error(error);
@@ -75,27 +95,181 @@
         }
 
         async function getWeatherData({ lat, lon }) {
-            const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relativehumidity_2m`);
+            const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m,direct_radiation&forecast_days=2`);
             const data = await response.json();
             const currentHour = new Date().getHours();
+            const next24Hours = {
+                temperature: data.hourly.temperature_2m.slice(currentHour, currentHour + 24),
+                humidity: data.hourly.relativehumidity_2m.slice(currentHour, currentHour + 24),
+                windSpeed: data.hourly.windspeed_10m.slice(currentHour, currentHour + 24),
+                solarRadiation: data.hourly.direct_radiation.slice(currentHour, currentHour + 24),
+            };
             return {
-                temperature: data.current_weather.temperature,
-                humidity: data.hourly.relativehumidity_2m[currentHour]
+                current: {
+                    temperature: data.current_weather.temperature,
+                    humidity: data.hourly.relativehumidity_2m[currentHour],
+                    windSpeed: data.hourly.windspeed_10m[currentHour],
+                    solarRadiation: data.hourly.direct_radiation[currentHour]
+                },
+                next24Hours: next24Hours
             };
         }
 
+        function calculateApparentTemperature(tempCelsius, humidity) {
+            return tempCelsius - ((100 - humidity) / 5);
+        }
+
         function calculateHeatIndex(tempCelsius, humidity) {
+            const tempF = (tempCelsius * 9/5) + 32;
+            const hi = 0.5 * (tempF + 61.0 + ((tempF - 68.0) * 1.2) + (humidity * 0.094));
+            return (hi - 32) * 5/9; // Convert back to Celsius
+        }
+
+        function calculateHeatIndexScore(tempCelsius, humidity) {
             return tempCelsius * humidity;
         }
 
-        function getSafeOutdoorTime(heatIndex) {
-            if (heatIndex < 1000) return '3 hours';
-            if (heatIndex < 1200) return '2 hours';
-            if (heatIndex < 1400) return '1 hour';
-            if (heatIndex < 1600) return '30 minutes';
-            if (heatIndex < 1800) return '15 minutes';
-            return 'No walks';
+        function calculateWBGT(tempCelsius, humidity, windSpeed, solarRadiation) {
+            const e = (humidity / 100) * 6.105 * Math.exp((17.27 * tempCelsius) / (237.7 + tempCelsius));
+            const wetBulbTemp = tempCelsius * Math.atan(0.151977 * Math.pow(humidity + 8.313659, 0.5)) + 
+                                Math.atan(tempCelsius + humidity) - Math.atan(humidity - 1.676331) + 
+                                0.00391838 * Math.pow(humidity, 1.5) * Math.atan(0.023101 * humidity) - 4.686035;
+            const globeTemp = tempCelsius + (0.02 * solarRadiation) - (0.4 * windSpeed);
+            return 0.7 * wetBulbTemp + 0.2 * globeTemp + 0.1 * tempCelsius;
         }
+
+        function getActivityAdvice(apparentTemp, wbgt, activity) {
+            let advice = '';
+            let color = '';
+
+            if (activity === 'bikejoring') {
+                if (apparentTemp >= 18 || wbgt >= 23) {
+                    advice = 'Do not harness the dogs';
+                    color = 'red';
+                } else if (apparentTemp >= 15 || wbgt >= 20) {
+                    advice = 'Shorten distances';
+                    color = 'yellow';
+                } else {
+                    advice = 'Full distances';
+                    color = 'green';
+                }
+            } else if (activity === 'canicross') {
+                if (apparentTemp >= 22 || wbgt >= 26) {
+                    advice = 'Do not harness the dogs';
+                    color = 'red';
+                } else if (apparentTemp >= 18 || wbgt >= 23) {
+                    advice = 'Shorten distances';
+                    color = 'yellow';
+                } else {
+                    advice = 'Full distances';
+                    color = 'green';
+                }
+            } else if (activity === 'scooterRig') {
+                if (apparentTemp >= 15 || wbgt >= 20) {
+                    advice = 'Do not harness the dogs';
+                    color = 'red';
+                } else if (apparentTemp >= 10 || wbgt >= 15) {
+                    advice = 'Shorten distances';
+                    color = 'yellow';
+                } else {
+                    advice = 'Full distances';
+                    color = 'green';
+                }
+            }
+
+            return `<span style="color: ${color};">${advice}</span>`;
+        }
+
+        function getWalkingAdvice(tempCelsius, humidity) {
+            const tempF = (tempCelsius * 9/5) + 32;
+            let walkTime = '3-hour';
+
+            if (tempF >= 105) {
+                walkTime = '15 minutes';
+            } else if (tempF >= 100) {
+                walkTime = humidity >= 30 ? '15 minutes' : '1-hour';
+            } else if (tempF >= 95) {
+                walkTime = humidity >= 50 ? '15 minutes' : '1-hour';
+            } else if (tempF >= 90) {
+                if (humidity >= 60) {
+                    walkTime = '15 minutes';
+                } else if (humidity >= 35) {
+                    walkTime = '1-hour';
+                } else {
+                    walkTime = '2-hour';
+                }
+            } else if (tempF >= 85) {
+                if (humidity >= 65) {
+                    walkTime = '1-hour';
+                } else {
+                    walkTime = '2-hour';
+                }
+            }
+
+            let advice = `Walking time: ${walkTime}`;
+            if (tempF >= 90) {
+                advice += " (Danger: Heat exhaustion is possible with prolonged exposure and/or physical activity)";
+            } else if (tempF >= 80) {
+                advice += " (Caution: Fatigue is possible with prolonged exposure and/or physical activity)";
+            }
+            
+            return advice;
+        }
+        
+        function getColorForTemperature(temp) {
+            if (temp < 10) return 'blue';
+            if (temp < 15) return 'green';
+            if (temp < 20) return 'orange';
+            return 'red';
+        }
+
+        function getColorForHeatIndexScore(score) {
+            if (score < 1000) return 'blue';
+            if (score < 1200) return 'green';
+            if (score < 1400) return 'orange';
+            return 'red';
+        }
+    
+        function createHeatIndexScoreChart(weatherData) {
+            const ctx = document.getElementById('heatIndexChart').getContext('2d');
+            const labels = Array.from({length: 24}, (_, i) => `${(new Date().getHours() + i) % 24}:00`);
+            const data = weatherData.next24Hours.temperature.map((temp, i) => 
+                calculateHeatIndexScore(temp, weatherData.next24Hours.humidity[i])
+            );
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Heat Index Score',
+                        data: data,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Heat Index Score'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Hour'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    
+    
     </script>
 </body>
 </html>

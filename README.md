@@ -15,7 +15,7 @@ Dogs overheating can be a fatal. In the UK, exertional heat-related illness affe
 ## Key Factors Affecting a Dog's Body Temperature
 
 1. **Ambient Temperature**: High temperatures can quickly increase a dog's body heat, especially during exercise.
-2. **Humidity**: Humidity is one of the most difficult aspects of heat stroke, as it will many times come with overcast conditions that lead many to believe that it is safe to exercise their dogs outside. The buildup of humidity generally corresponds with slightly cooler temperatures, making owners believe that is is now cool enough to walk or exercise their dogs outside. But usually it is even worse than the heat. 
+2. **Humidity**:  Humidity is one of the most difficult aspects of heat stroke - usually it comes with overcast conditions and cooler temperatures that lead many to believe that it is safe to walk or exercise their dogs outside. However, High humidity (over 35%) reduces the effectiveness of evaporative cooling, and humidity above 80% can negate it entirely.
 3. **Exercise Intensity**: Physical activity generates body heat, which can compound the effects of hot and humid weather.
 
 ## How It Works
@@ -51,3 +51,5 @@ Dogs overheating can be a fatal. In the UK, exertional heat-related illness affe
 - [Dogs Don’t Die Just in Hot Cars—Exertional Heat-Related Illness (Heatstroke) Is a Greater Threat to UK Dogs](https://www.mdpi.com/2076-2615/10/8/1324) by Emily J. Hall, Anne J. Carter and Dan G. O'Neill.
 - [How Humidity Can Lead To Heat Stroke In Dogs](https://rundawg.com/how-humidity-can-lead-to-heat-stroke-in-dogs/) by Run Dawg, 2022
 - [Canine Heat Stroke](https://www.iowaveterinaryspecialties.com/student-scholars/canine-heat-stroke-literature-review) by Victoria T 2017
+- https://www.chelmsforddogassociation.org/media_uploads/Heat-Index-Chart.pdf
+- https://www.ukbwg.org.uk/wp-content/uploads/2021/06/210609-BWG-Position-Statement-Heat-related-illness-in-dogs.pdf
