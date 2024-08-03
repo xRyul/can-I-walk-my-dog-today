@@ -218,10 +218,10 @@
                 const heatIndexPercentage = calculateHeatIndexPercentage(weatherData.current.temperature, weatherData.current.humidity);
                 const wbgt = calculateWBGT(weatherData.current.temperature, weatherData.current.humidity, weatherData.current.windSpeed, weatherData.current.solarRadiation);
 
-                const bikejoringAdvice = getActivityAdvice(apparentTemp, wbgt, 'bikejoring');
-                const canicrossAdvice = getActivityAdvice(apparentTemp, wbgt, 'canicross');
-                const scooterRigAdvice = getActivityAdvice(apparentTemp, wbgt, 'scooterRig');
-                const walkingAdvice = getWalkingAdvice(weatherData.current.temperature, weatherData.current.humidity);
+                const bikejoringAdvice = getActivityAdvice(apparentTemp, wbgt, heatIndex, heatIndexScore, 'bikejoring');
+                const canicrossAdvice = getActivityAdvice(apparentTemp, wbgt, heatIndex, heatIndexScore, 'canicross');
+                const scooterRigAdvice = getActivityAdvice(apparentTemp, wbgt, heatIndex, heatIndexScore, 'scooterRig');
+                const walkingAdvice = getWalkingAdvice(weatherData.current.temperature, weatherData.current.humidity, apparentTemp, wbgt, heatIndex, heatIndexScore);
 
                 resultDiv.innerHTML = `
                     <div class="section">
@@ -526,15 +526,15 @@
             return 0.7 * Tw + 0.2 * Tg + 0.1 * tempCelsius;
         }
 
-        function getActivityAdvice(apparentTemp, wbgt, activity) {
+        function getActivityAdvice(apparentTemp, wbgt, heatIndex, heatIndexScore, activity) {
             let advice = '';
             let color = '';
 
             if (activity === 'bikejoring') {
-                if (apparentTemp >= 18 || wbgt >= 23) {
+                if (apparentTemp >= 16 || wbgt >= 21 || heatIndex >= 18 || heatIndexScore >= 1200) {
                     advice = 'Do not harness the dogs';
                     color = 'red';
-                } else if (apparentTemp >= 15 || wbgt >= 20) {
+                } else if (apparentTemp >= 13 || wbgt >= 18 || heatIndex >= 15 || heatIndexScore >= 1000) {
                     advice = 'Shorten distances';
                     color = 'yellow';
                 } else {
@@ -542,10 +542,10 @@
                     color = 'green';
                 }
             } else if (activity === 'canicross') {
-                if (apparentTemp >= 22 || wbgt >= 26) {
+                if (apparentTemp >= 20 || wbgt >= 24 || heatIndex >= 22 || heatIndexScore >= 1400) {
                     advice = 'Do not harness the dogs';
                     color = 'red';
-                } else if (apparentTemp >= 18 || wbgt >= 23) {
+                } else if (apparentTemp >= 16 || wbgt >= 21 || heatIndex >= 18 || heatIndexScore >= 1200) {
                     advice = 'Shorten distances';
                     color = 'yellow';
                 } else {
@@ -553,10 +553,10 @@
                     color = 'green';
                 }
             } else if (activity === 'scooterRig') {
-                if (apparentTemp >= 15 || wbgt >= 20) {
+                if (apparentTemp >= 13 || wbgt >= 18 || heatIndex >= 15 || heatIndexScore >= 1000) {
                     advice = 'Do not harness the dogs';
                     color = 'red';
-                } else if (apparentTemp >= 10 || wbgt >= 15) {
+                } else if (apparentTemp >= 8 || wbgt >= 13 || heatIndex >= 10 || heatIndexScore >= 800) {
                     advice = 'Shorten distances';
                     color = 'yellow';
                 } else {
@@ -568,40 +568,28 @@
             return `<span style="color: ${color};">${advice}</span>`;
         }
 
-        function getWalkingAdvice(tempCelsius, humidity) {
-            const tempF = (tempCelsius * 9/5) + 32;
-            let walkTime = '3-hour';
+        function getWalkingAdvice(tempCelsius, humidity, apparentTemp, wbgt, heatIndex, heatIndexScore) {
+            let walkTime = '60 minutes';
+            let advice = '';
 
-            if (tempF >= 105) {
+            if (apparentTemp >= 30 || wbgt >= 28 || heatIndex >= 32 || heatIndexScore >= 1600) {
+                walkTime = '5-10 minutes';
+                advice = 'Extreme caution: Very short walks only. Risk of heat stroke.';
+            } else if (apparentTemp >= 25 || wbgt >= 24 || heatIndex >= 27 || heatIndexScore >= 1400) {
                 walkTime = '15 minutes';
-            } else if (tempF >= 100) {
-                walkTime = humidity >= 30 ? '15 minutes' : '1-hour';
-            } else if (tempF >= 95) {
-                walkTime = humidity >= 50 ? '15 minutes' : '1-hour';
-            } else if (tempF >= 90) {
-                if (humidity >= 60) {
-                    walkTime = '15 minutes';
-                } else if (humidity >= 35) {
-                    walkTime = '1-hour';
-                } else {
-                    walkTime = '2-hour';
-                }
-            } else if (tempF >= 85) {
-                if (humidity >= 65) {
-                    walkTime = '1-hour';
-                } else {
-                    walkTime = '2-hour';
-                }
+                advice = 'Caution: Short walks. Watch for signs of overheating.';
+            } else if (apparentTemp >= 20 || wbgt >= 20 || heatIndex >= 22 || heatIndexScore >= 1200) {
+                walkTime = '30 minutes';
+                advice = 'Moderate: Keep walks shorter. Provide plenty of water.';
+            } else if (apparentTemp >= 15 || wbgt >= 16 || heatIndex >= 17 || heatIndexScore >= 1000) {
+                walkTime = '45 minutes';
+                advice = 'Fair: Normal walking time, but be aware of your dog\'s condition.';
+            } else {
+                walkTime = '60 minutes';
+                advice = 'Good: Normal walking time. Enjoy your walk!';
             }
 
-            let advice = `Walking time: ${walkTime}`;
-            if (tempF >= 90) {
-                advice += " (Danger: Heat exhaustion is possible with prolonged exposure and/or physical activity)";
-            } else if (tempF >= 80) {
-                advice += " (Caution: Fatigue is possible with prolonged exposure and/or physical activity)";
-            }
-            
-            return advice;
+            return `Walking time: ${walkTime}. ${advice}`;
         }
         
         function getColorForTemperature(temp) {

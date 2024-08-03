@@ -47,6 +47,7 @@ And provide some generic advice based on ASSA Humidity Reference Chart weather y
 ## To Do
 
 - [ ] Fix walking advice! It is dangerously high.
+  - [ ] Newline for walking advice. Provide explanation why? e.g. expnd wlaking advice card or maybe provide a small chart with all possible metrics? 
 - [ ] Look into Input Validation: cities, postcodes, locations
 - [ ] Unit options: Celsius, Farenheit
 - [ ] Implement breed-specific recommendations
