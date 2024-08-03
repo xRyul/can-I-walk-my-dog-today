@@ -31,8 +31,23 @@ And provide some generic advice based on ASSA Humidity Reference Chart weather y
 ## How It Works
 
 
+
+## Formulas for Recommendations
+- ASSA has a few recommendations:
+  - General Advice. ASSA Recommends that ambient temperatures are below 15 degrees and below 75% humidity, if you still feel this is too warm then don't run ([ASSA Beginner Guide p.8](https://www.assa.dog/wp-content/uploads/2022/09/assa_beginners_guide_v2022.pdf))
+  - Apparent Temperature. For more detailed calculation humidity is taken into consideration, and then specific advice provided based on different activity level ([ASSA HUmidity Reference and Apparent Temperature Chart](https://assa.dog/wp-content/uploads/2017/06/Temp-Humdity-Reference-Guide-v1.0-May-2017.pdf))
+    - Canicross: Shortenned distances and timings when Apparent temperture is between 18-21.5C
+    - Bikejoring: Shortenned distances and timings when Apparent temperture is between 15-17.5C
+    - Scooter/Rig: Shortenned distances and timings when Apparent temperture is between 10-14.5C
+- Heat Index Score. CaniCross.org.uk recommends simple formula: HUMIDITY x Temperature = Heat Index Score (if this score exceed 1000 - caution should be taken, and exercise distances and timings shortened) (This is covered across all their freely provided training plans [CanniCross Training Plan provided by Canicross UK](https://www.canicross.org.uk/canicross-training-plans))
+- Chelmsford Dog Association. Provides Heat Index Chart for Dogs Engaged in Low Activity. [[CDA - Low activity Duration](https://www.chelmsforddogassociation.org/media_uploads/Heat-Index-Chart.pdf)]
+
+
+
 ## To Do
 
+- [ ] Look into Input Validation: cities, postcodes, locations
+- [ ] Unit options: Celsius, Farenheit
 - [ ] Implement breed-specific recommendations
 - [ ] Look into heat acclimation
 - [ ] Incorporate findings that male dogs have a higher chance of heatstroke

@@ -1,138 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Can I Walk My Dog Today?</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #2ecc71;
-            --background-color: #ecf0f1;
-            --text-color: #34495e;
-            --card-background: #ffffff;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        h1 {
-            text-align: center;
-            color: var(--primary-color);
-            margin-bottom: 2rem;
-        }
-
-        .input-group {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-
-        input, button {
-            font-size: 1rem;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 4px;
-        }
-
-        input {
-            width: 60%;
-            max-width: 300px;
-            margin-right: 1rem;
-        }
-
-        button {
-            background-color: var(--primary-color);
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #2980b9;
-        }
-
-        #result {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .metric-card {
-            background-color: var(--card-background);
-            border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .metric-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .metric-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .metric-title {
-            font-weight: bold;
-        }
-
-        .metric-value {
-            font-size: 1.2rem;
-            color: var(--primary-color);
-        }
-
-        .metric-chart {
-            display: none;
-            margin-top: 1rem;
-            height: 200px;
-        }
-
-        .metric-card.expanded .metric-chart {
-            display: block;
-        }
-
-        #weatherMetricsChart {
-            width: 100%;
-            height: 400px;
-            margin-top: 2rem;
-        }
-
-        @media (max-width: 768px) {
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Can I Walk My Dog Today?</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <style>
+            :root {
+                --primary-color: #3498db;
+                --secondary-color: #2ecc71;
+                --background-color: #ecf0f1;
+                --text-color: #34495e;
+                --card-background: #ffffff;
+                --section-background: #f7f9fa;
+            }
+    
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: var(--background-color);
+                color: var(--text-color);
+                line-height: 1.6;
+                margin: 0;
+                padding: 0;
+            }
+    
             .container {
-                padding: 1rem;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 2rem;
             }
-
-            input {
-                width: 100%;
-                margin-right: 0;
-                margin-bottom: 1rem;
+    
+            h1, h2 {
+                text-align: center;
+                color: var(--primary-color);
             }
-
+    
             .input-group {
-                flex-direction: column;
+                display: flex;
+                justify-content: center;
+                margin-bottom: 2rem;
             }
-        }
-    </style>
-</head>
+    
+            input, button {
+                font-size: 1rem;
+                padding: 0.5rem 1rem;
+                border: none;
+                border-radius: 4px;
+            }
+    
+            input {
+                width: 60%;
+                max-width: 300px;
+                margin-right: 1rem;
+            }
+    
+            button {
+                background-color: var(--primary-color);
+                color: white;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+    
+            button:hover {
+                background-color: #2980b9;
+            }
+    
+            .section {
+                background-color: var(--section-background);
+                border-radius: 8px;
+                padding: 1rem;
+                margin-bottom: 2rem;
+            }
+    
+            .card-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+            }
+    
+            .metric-card {
+                background-color: var(--card-background);
+                border-radius: 8px;
+                padding: 1rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
+            }
+    
+            .metric-card:hover {
+                transform: translateY(-5px);
+            }
+    
+            .metric-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+    
+            .metric-title {
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+            }
+    
+            .metric-title i {
+                margin-right: 0.5rem;
+            }
+    
+            .metric-value {
+                font-size: 1.2rem;
+                color: var(--primary-color);
+            }
+    
+            .metric-description {
+                font-size: 0.8rem;
+                color: #7f8c8d;
+                margin-top: 0.5rem;
+            }
+    
+            .metric-chart {
+                display: none;
+                margin-top: 1rem;
+                height: 200px;
+            }
+    
+            .metric-card.expanded .metric-chart {
+                display: block;
+            }
+    
+            .metric-preview {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 30px;
+                background: linear-gradient(to top, rgba(255,255,255,0.9), rgba(255,255,255,0));
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+    
+            .metric-card:hover .metric-preview {
+                opacity: 1;
+            }
+    
+            .visual-indicator {
+                width: 100%;
+                height: 4px;
+                background-color: #e0e0e0;
+                border-radius: 2px;
+                margin-top: 0.5rem;
+                overflow: hidden;
+            }
+    
+            .visual-indicator-bar {
+                height: 100%;
+                width: 0;
+                transition: width 0.3s ease;
+            }
+    
+            #weatherMetricsChart {
+                width: 100%;
+                height: 400px;
+                margin-top: 2rem;
+            }
+    
+            @media (max-width: 768px) {
+                .container {
+                    padding: 1rem;
+                }
+    
+                input {
+                    width: 100%;
+                    margin-right: 0;
+                    margin-bottom: 1rem;
+                }
+    
+                .input-group {
+                    flex-direction: column;
+                }
+    
+                .card-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
 <body>
     <div class="container">
         <h1>Can I Walk My Dog Today?</h1>
@@ -160,6 +215,7 @@
                 const apparentTemp = calculateApparentTemperature(weatherData.current.temperature, weatherData.current.humidity);
                 const heatIndex = calculateHeatIndex(weatherData.current.temperature, weatherData.current.humidity);
                 const heatIndexScore = calculateHeatIndexScore(weatherData.current.temperature, weatherData.current.humidity);
+                const heatIndexPercentage = calculateHeatIndexPercentage(weatherData.current.temperature, weatherData.current.humidity);
                 const wbgt = calculateWBGT(weatherData.current.temperature, weatherData.current.humidity, weatherData.current.windSpeed, weatherData.current.solarRadiation);
 
                 const bikejoringAdvice = getActivityAdvice(apparentTemp, wbgt, 'bikejoring');
@@ -168,70 +224,122 @@
                 const walkingAdvice = getWalkingAdvice(weatherData.current.temperature, weatherData.current.humidity);
 
                 resultDiv.innerHTML = `
-                    <div class="metric-card" data-metric="temperature">
-                        <div class="metric-content">
-                            <div class="metric-title">Temperature</div>
-                            <div class="metric-value" style="color: ${getColorForTemperature(weatherData.current.temperature)}">${weatherData.current.temperature.toFixed(1)}°C</div>
-                        </div>
-                        <div class="metric-chart"><canvas></canvas></div>
-                    </div>
-                    <div class="metric-card" data-metric="humidity">
-                        <div class="metric-content">
-                            <div class="metric-title">Humidity</div>
-                            <div class="metric-value">${weatherData.current.humidity.toFixed(1)}%</div>
-                        </div>
-                        <div class="metric-chart"><canvas></canvas></div>
-                    </div>
-                    <div class="metric-card" data-metric="heatIndex">
-                        <div class="metric-content">
-                            <div class="metric-title">Heat Index</div>
-                            <div class="metric-value" style="color: ${getColorForTemperature(heatIndex)}">${heatIndex.toFixed(1)}°C</div>
-                        </div>
-                        <div class="metric-chart"><canvas></canvas></div>
-                    </div>
-                    <div class="metric-card" data-metric="heatIndexScore">
-                        <div class="metric-content">
-                            <div class="metric-title">Heat Index Score</div>
-                            <div class="metric-value" style="color: ${getColorForHeatIndexScore(heatIndexScore)}">${heatIndexScore.toFixed(1)}</div>
-                        </div>
-                        <div class="metric-chart"><canvas></canvas></div>
-                    </div>
-                    <div class="metric-card" data-metric="apparentTemperature">
-                        <div class="metric-content">
-                            <div class="metric-title">Apparent Temperature</div>
-                            <div class="metric-value" style="color: ${getColorForTemperature(apparentTemp)}">${apparentTemp.toFixed(1)}°C</div>
-                        </div>
-                        <div class="metric-chart"><canvas></canvas></div>
-                    </div>
-                    <div class="metric-card" data-metric="wbgt">
-                        <div class="metric-content">
-                            <div class="metric-title">WBGT</div>
-                            <div class="metric-value" style="color: ${getColorForTemperature(wbgt)}">${wbgt.toFixed(1)}°C</div>
-                        </div>
-                        <div class="metric-chart"><canvas></canvas></div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-content">
-                            <div class="metric-title">Walking Advice</div>
-                            <div class="metric-value">${walkingAdvice}</div>
+                    <div class="section">
+                        <h2>Current Conditions</h2>
+                        <div class="card-grid">
+                            <div class="metric-card" data-metric="temperature">
+                                <div class="metric-content">
+                                    <div class="metric-title"><i class="fas fa-thermometer-half"></i> Temperature</div>
+                                    <div class="metric-value" style="color: ${getColorForTemperature(weatherData.current.temperature)}">${weatherData.current.temperature.toFixed(1)}°C</div>
+                                </div>
+                                <div class="metric-description">Current air temperature</div>
+                                <div class="visual-indicator"><div class="visual-indicator-bar" style="width: ${(weatherData.current.temperature / 50) * 100}%; background-color: ${getColorForTemperature(weatherData.current.temperature)}"></div></div>
+                                <div class="metric-preview"></div>
+                                <div class="metric-chart"><canvas></canvas></div>
+                            </div>
+                            <div class="metric-card" data-metric="humidity">
+                                <div class="metric-content">
+                                    <div class="metric-title"><i class="fas fa-tint"></i> Humidity</div>
+                                    <div class="metric-value">${weatherData.current.humidity.toFixed(1)}%</div>
+                                </div>
+                                <div class="metric-description">Relative humidity in the air</div>
+                                <div class="visual-indicator"><div class="visual-indicator-bar" style="width: ${weatherData.current.humidity}%; background-color: #3498db"></div></div>
+                                <div class="metric-preview"></div>
+                                <div class="metric-chart"><canvas></canvas></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="metric-card">
-                        <div class="metric-content">
-                            <div class="metric-title">Canicross</div>
-                            <div class="metric-value">${canicrossAdvice}</div>
+                    <div class="section">
+                        <h2>Perceived Conditions</h2>
+                        <div class="card-grid">
+                            <div class="metric-card" data-metric="heatIndex">
+                                <div class="metric-content">
+                                    <div class="metric-title"><i class="fas fa-fire"></i> Heat Index</div>
+                                    <div class="metric-value" style="color: ${getColorForTemperature(heatIndex)}">${heatIndex.toFixed(1)}°C</div>
+                                </div>
+                                <div class="metric-description">How hot it feels considering humidity</div>
+                                <div class="visual-indicator"><div class="visual-indicator-bar" style="width: ${(heatIndex / 50) * 100}%; background-color: ${getColorForTemperature(heatIndex)}"></div></div>
+                                <div class="metric-preview"></div>
+                                <div class="metric-chart"><canvas></canvas></div>
+                            </div>
+                            <div class="metric-card" data-metric="apparentTemperature">
+                                <div class="metric-content">
+                                    <div class="metric-title"><i class="fas fa-thermometer"></i> Apparent Temperature</div>
+                                    <div class="metric-value" style="color: ${getColorForTemperature(apparentTemp)}">${apparentTemp.toFixed(1)}°C</div>
+                                </div>
+                                <div class="metric-description">How warm it feels considering all factors</div>
+                                <div class="visual-indicator"><div class="visual-indicator-bar" style="width: ${(apparentTemp / 50) * 100}%; background-color: ${getColorForTemperature(apparentTemp)}"></div></div>
+                                <div class="metric-preview"></div>
+                                <div class="metric-chart"><canvas></canvas></div>
+                            </div>
+                            <div class="metric-card" data-metric="wbgt">
+                                <div class="metric-content">
+                                    <div class="metric-title"><i class="fas fa-globe-americas"></i> WBGT</div>
+                                    <div class="metric-value" style="color: ${getColorForTemperature(wbgt)}">${wbgt.toFixed(1)}°C</div>
+                                </div>
+                                <div class="metric-description">Wet Bulb Globe Temperature (heat stress index)</div>
+                                <div class="visual-indicator"><div class="visual-indicator-bar" style="width: ${(wbgt / 50) * 100}%; background-color: ${getColorForTemperature(wbgt)}"></div></div>
+                                <div class="metric-preview"></div>
+                                <div class="metric-chart"><canvas></canvas></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="metric-card">
-                        <div class="metric-content">
-                            <div class="metric-title">Bikejoring</div>
-                            <div class="metric-value">${bikejoringAdvice}</div>
+                    <div class="section">
+                        <h2>Heat Index Metrics</h2>
+                        <div class="card-grid">
+                            <div class="metric-card" data-metric="heatIndexScore">
+                                <div class="metric-content">
+                                    <div class="metric-title"><i class="fas fa-chart-line"></i> Heat Index Score</div>
+                                    <div class="metric-value" style="color: ${getColorForHeatIndexScore(heatIndexScore)}">${heatIndexScore.toFixed(1)}</div>
+                                </div>
+                                <div class="metric-description">Composite score of temperature and humidity</div>
+                                <div class="visual-indicator"><div class="visual-indicator-bar" style="width: ${(heatIndexScore / 2000) * 100}%; background-color: ${getColorForHeatIndexScore(heatIndexScore)}"></div></div>
+                                <div class="metric-preview"></div>
+                                <div class="metric-chart"><canvas></canvas></div>
+                            </div>
+                            <div class="metric-card" data-metric="heatIndexPercentage">
+                                <div class="metric-content">
+                                    <div class="metric-title"><i class="fas fa-percentage"></i> Heat Index Percentage</div>
+                                    <div class="metric-value" style="color: ${getColorForHeatIndexPercentage(heatIndexPercentage)}">${heatIndexPercentage.toFixed(1)}%</div>
+                                </div>
+                                <div class="metric-description">Percentage based on 15°C and 75% humidity as maximum</div>
+                                <div class="visual-indicator"><div class="visual-indicator-bar" style="width: ${heatIndexPercentage}%; background-color: ${getColorForHeatIndexPercentage(heatIndexPercentage)}"></div></div>
+                                <div class="metric-preview"></div>
+                                <div class="metric-chart"><canvas></canvas></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="metric-card">
-                        <div class="metric-content">
-                            <div class="metric-title">Scooter/Rig Classes</div>
-                            <div class="metric-value">${scooterRigAdvice}</div>
+                    <div class="section">
+                        <h2>Activity Advice</h2>
+                        <div class="card-grid">
+                            <div class="metric-card">
+                                <div class="metric-content">
+                                    <div class="metric-title"><i class="fas fa-walking"></i> Walking Advice</div>
+                                    <div class="metric-value">${walkingAdvice}</div>
+                                </div>
+                                <div class="metric-description">Recommended duration for dog walking</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-content">
+                                    <div class="metric-title"><i class="fas fa-running"></i> Canicross</div>
+                                    <div class="metric-value">${canicrossAdvice}</div>
+                                </div>
+                                <div class="metric-description">Advice for running with your dog</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-content">
+                                    <div class="metric-title"><i class="fas fa-bicycle"></i> Bikejoring</div>
+                                    <div class="metric-value">${bikejoringAdvice}</div>
+                                </div>
+                                <div class="metric-description">Advice for biking with your dog</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-content">
+                                    <div class="metric-title"><i class="fas fa-dog"></i> Scooter/Rig Classes</div>
+                                    <div class="metric-value">${scooterRigAdvice}</div>
+                                </div>
+                                <div class="metric-description">Advice for scootering or rigging with your dog</div>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -256,7 +364,7 @@
                 });
             });
         }
-        
+
         function createMetricChart(canvas, metric, weatherData) {
             const labels = Array.from({length: 24}, (_, i) => `${(new Date().getHours() + i) % 24}:00`);
             let data;
@@ -276,6 +384,11 @@
                 case 'heatIndexScore':
                     data = weatherData.next24Hours.temperature.map((temp, i) => 
                         calculateHeatIndexScore(temp, weatherData.next24Hours.humidity[i])
+                    );
+                    break;
+                case 'heatIndexPercentage':
+                    data = weatherData.next24Hours.temperature.map((temp, i) => 
+                        calculateHeatIndexPercentage(temp, weatherData.next24Hours.humidity[i])
                     );
                     break;
                 case 'apparentTemperature':
@@ -353,6 +466,17 @@
 
         function calculateHeatIndexScore(tempCelsius, humidity) {
             return tempCelsius * humidity;
+        }
+
+        function calculateHeatIndexPercentage(tempCelsius, humidity) {
+            const T_max = 15; // Maximum temperature in Celsius
+            const H_max = 75; // Maximum humidity percentage
+
+            const T_ratio = tempCelsius / T_max;
+            const H_ratio = humidity / H_max;
+
+            const heatIndexPercentage = ((T_ratio + H_ratio) / 2) * 100;
+            return Math.min(heatIndexPercentage, 100); // Cap at 100%
         }
 
         function calculateWBGT(tempCelsius, humidity, windSpeed, solarRadiation) {
@@ -456,6 +580,12 @@
             return 'red';
         }
     
+        function getColorForHeatIndexPercentage(percentage) {
+            if (percentage < 50) return '#2ecc71'; // Green
+            if (percentage < 75) return '#f39c12'; // Orange
+            return '#e74c3c'; // Red
+        }
+
         function createWeatherMetricsChart(weatherData) {
             const ctx = document.getElementById('weatherMetricsChart').getContext('2d');
             const labels = Array.from({length: 24}, (_, i) => `${(new Date().getHours() + i) % 24}:00`);
