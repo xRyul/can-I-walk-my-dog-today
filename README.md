@@ -46,6 +46,7 @@ And provide some generic advice based on ASSA Humidity Reference Chart weather y
 
 ## To Do
 
+- [ ] Fix walking advice! It is dangerously high.
 - [ ] Look into Input Validation: cities, postcodes, locations
 - [ ] Unit options: Celsius, Farenheit
 - [ ] Implement breed-specific recommendations
@@ -73,3 +74,7 @@ And provide some generic advice based on ASSA Humidity Reference Chart weather y
 - [Canine Heat Stroke](https://www.iowaveterinaryspecialties.com/student-scholars/canine-heat-stroke-literature-review) by Victoria T 2017
 - https://www.chelmsforddogassociation.org/media_uploads/Heat-Index-Chart.pdf
 - https://www.ukbwg.org.uk/wp-content/uploads/2021/06/210609-BWG-Position-Statement-Heat-related-illness-in-dogs.pdf
+- [Thermal Comfort observations](http://www.bom.gov.au/info/thermal_stress/#atapproximation) by Australian Government Bureau of Meteorology
+- [Heat Index Calculation - Regression equation of Rothfusz](https://www.wpc.ncep.noaa.gov/heat_index/hi_equation.html)
+- [What is the heat index?](https://www.weather.gov/ama/heatindex) by National Weather Service
+- NEW improved calculation of HEAT INDEX - [Extending the Heat Index](https://journals.ametsoc.org/view/journals/apme/61/10/JAMC-D-22-0021.1.xml) by Yi-Chuan Lu and David M. Romps 2022

@@ -212,7 +212,7 @@
             try {
                 const coordinates = await getCoordinates(location);
                 const weatherData = await getWeatherData(coordinates);
-                const apparentTemp = calculateApparentTemperature(weatherData.current.temperature, weatherData.current.humidity);
+                const apparentTemp = calculateApparentTemperature(weatherData.current.temperature, weatherData.current.humidity, weatherData.current.windSpeed);
                 const heatIndex = calculateHeatIndex(weatherData.current.temperature, weatherData.current.humidity);
                 const heatIndexScore = calculateHeatIndexScore(weatherData.current.temperature, weatherData.current.humidity);
                 const heatIndexPercentage = calculateHeatIndexPercentage(weatherData.current.temperature, weatherData.current.humidity);
@@ -454,8 +454,17 @@
             };
         }
 
-        function calculateApparentTemperature(tempCelsius, humidity) {
-            return tempCelsius - ((100 - humidity) / 5);
+        function calculateApparentTemperature(tempCelsius, humidity, windSpeed) {
+            // Calculate vapor pressure
+            const e = (humidity / 100) * 6.105 * Math.exp((17.27 * tempCelsius) / (237.7 + tempCelsius));
+            
+            // Convert wind speed from km/h to m/s
+            const ws = windSpeed / 3.6;
+            
+            // Calculate Apparent Temperature
+            const AT = tempCelsius + 0.33 * e - 0.70 * ws - 4.00;
+            
+            return AT;
         }
 
         function calculateHeatIndex(tempCelsius, humidity) {
