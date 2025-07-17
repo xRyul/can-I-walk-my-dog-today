@@ -15,21 +15,21 @@
   - Set up Next.js API routes with Edge Runtime for optimal serverless performance
   - _Requirements: All requirements_
 
-- [ ] 2. Create shared data models and interfaces
+- [x] 2. Create shared data models and interfaces
 
-  - [ ] 2.1 Define weather data interfaces
+  - [x] 2.1 Define weather data interfaces
 
     - Create TypeScript interfaces for location, current weather, and forecast data
     - Implement data validation utilities
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
-  - [ ] 2.2 Define recommendation data models
+  - [x] 2.2 Define recommendation data models
 
     - Create interfaces for activity recommendations
     - Implement safety level enumerations
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7_
 
-  - [ ] 2.3 Define user preferences models
+  - [x] 2.3 Define user preferences models
     - Create interfaces for location history, dog profiles, and display preferences
     - Implement validation for user input
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6_
