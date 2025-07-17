@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build:shared && npm run build:web",
+  "devCommand": "npm run web",
+  "installCommand": "npm install",
+  "outputDirectory": "packages/web/.next",
+  "framework": "nextjs",
+  "regions": ["sfo1"],
+  "env": {
+    "NODE_ENV": "production",
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
+  "github": {
+    "silent": true,
+    "autoJobCancelation": true
+  }
+}
