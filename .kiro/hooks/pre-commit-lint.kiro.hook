@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "Pre-commit Linter Check",
+  "description": "Reminds the user to run the linter before committing code to ensure it meets the project's coding standards",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "*.js",
+      "*.jsx",
+      "*.ts",
+      "*.tsx"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "I notice you're working on code files that might be committed soon. Remember to run the linter before committing to ensure your code meets the project's standards.\n\nBased on the project's tech stack, you should run:\n```\nnpx eslint .\n```\n\nThis will help maintain code quality and consistency across the project. Would you like me to help you run the linter now?"
+  }
+}

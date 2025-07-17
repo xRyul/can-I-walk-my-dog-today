@@ -1,0 +1,25 @@
+{
+  "enabled": true,
+  "name": "Auto Documentation Generator",
+  "description": "Automatically generates comprehensive documentation for modified files by extracting function/class signatures, documenting parameters and return types, providing usage examples, and updating README.md with new exports.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered",
+    "patterns": [
+      "**/*.{js",
+      "jsx",
+      "ts",
+      "tsx",
+      "py",
+      "rb",
+      "go",
+      "java",
+      "php",
+      "cs}"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Please generate comprehensive documentation for the modified file:\n\n1. Extract all function and class signatures\n2. Document parameters with their types and purpose\n3. Document return types and values\n4. Provide usage examples based on how the code is used elsewhere in the project\n5. If this file exports new components/functions/classes, suggest updates for the README.md\n6. Ensure documentation follows project standards (clear reasoning, self-documenting approach, educational style)\n\nFor the documentation:\n- Include a clear description of what each function/class does\n- Explain complex algorithms step-by-step\n- Use descriptive language that would help someone learning the technology\n- Follow the project's documentation guidelines\n\nPlease format the documentation in a way that's compatible with the file type (JSDoc for JS/TS, docstrings for Python, etc.)."
+  }
+}

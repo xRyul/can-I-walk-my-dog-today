@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "Test Coverage Monitor",
+  "description": "Monitors source file changes, identifies modified functions, checks test coverage, generates missing tests, runs tests, and updates coverage reports",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.{js",
+      "jsx",
+      "ts",
+      "tsx}"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "I noticed changes to source files. I'll help ensure proper test coverage:\n\n1. Analyze the changes to identify new or modified functions/methods\n2. Check if corresponding tests exist for these changes\n3. Determine if the existing tests provide adequate coverage\n4. Generate test cases for any uncovered code\n5. Run the tests to verify they pass\n6. Update coverage reports\n\nPlease provide:\n1. The specific changes you made to the source file\n2. Location of existing test files (if any)\n3. Any testing framework preferences (Jest, React Testing Library, etc.)\n4. Any specific testing patterns or conventions you follow\n\nI'll help ensure your code changes are properly tested!"
+  }
+}

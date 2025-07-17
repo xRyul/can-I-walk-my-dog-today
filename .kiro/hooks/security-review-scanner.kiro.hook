@@ -1,0 +1,35 @@
+{
+  "enabled": true,
+  "name": "Security Vulnerability Scanner",
+  "description": "Automatically reviews changed files for potential security issues like hardcoded credentials, API keys, tokens, and other sensitive information",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.{js",
+      "jsx",
+      "ts",
+      "tsx",
+      "py",
+      "rb",
+      "php",
+      "java",
+      "go",
+      "cs",
+      "html",
+      "css",
+      "json",
+      "yaml",
+      "yml",
+      "xml",
+      "env",
+      "config",
+      "ini",
+      "properties}"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the changed files for potential security vulnerabilities:\n\n1. Look for API keys, tokens, or credentials in source code\n2. Check for private keys or sensitive credentials\n3. Scan for encryption keys or certificates\n4. Identify authentication tokens or session IDs\n5. Flag passwords or secrets in configuration files\n6. Detect IP addresses containing sensitive data\n7. Find hardcoded internal URLs\n8. Spot database connection credentials\n\nFor each security issue found:\n1. Highlight the specific line number and code snippet\n2. Explain the security risk it poses\n3. Suggest a secure alternative approach (e.g., environment variables, secret management services)\n4. Recommend relevant security best practices\n\nIf no security issues are found, confirm that the code appears secure and mention any security best practices that are being followed."
+  }
+}

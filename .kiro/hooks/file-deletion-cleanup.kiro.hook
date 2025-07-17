@@ -1,0 +1,21 @@
+{
+  "enabled": true,
+  "name": "File Deletion Cleanup",
+  "description": "Detects when files are deleted and helps clean up references to them across the codebase, maintaining project integrity by removing or commenting out import statements and suggesting replacements.",
+  "version": "1",
+  "when": {
+    "type": "fileDeleted",
+    "patterns": [
+      "**/*.{js",
+      "jsx",
+      "ts",
+      "tsx",
+      "css",
+      "scss}"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A file has been deleted: {{filename}}\n\n1. Find all imports or references to this file across the codebase\n2. For each reference found:\n   - Suggest removing or commenting out the import statement\n   - If the file is used in the code, suggest how to handle the missing reference\n   - Recommend potential replacement components or alternatives if appropriate\n\nPlease provide:\n1. A list of files that need to be updated\n2. The specific changes needed for each file\n3. Any recommendations for maintaining functionality despite the deleted component"
+  }
+}
