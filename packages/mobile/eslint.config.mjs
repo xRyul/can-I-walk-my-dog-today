@@ -1,45 +1,30 @@
 // eslint.config.mjs
-import { FlatCompat } from "@eslint/eslintrc";
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: {
-    rules: {
-      "no-unused-vars": "error",
-      "no-undef": "error"
-    }
-  }
-});
-
-export default [
-  ...compat.extends(
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:react-native/all"
-  ),
+export default tseslint.config(
+  eslint.configs.recommended,
+  tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   {
     languageOptions: {
-      parser: await compat.importPlugin("@typescript-eslint/parser"),
       parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "module",
-        ecmaFeatures: {
-          jsx: true,
-        },
+        projectService: true,
+        tsconfigRootDir: __dirname,
       },
     },
+  },
+  {
+    files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
     plugins: {
-      "@typescript-eslint": await compat.importPlugin("@typescript-eslint/eslint-plugin"),
-      "react": await compat.importPlugin("eslint-plugin-react"),
-      "react-hooks": await compat.importPlugin("eslint-plugin-react-hooks"),
-      "react-native": await compat.importPlugin("eslint-plugin-react-native"),
+      react: (await import("eslint-plugin-react")).default,
+      "react-hooks": (await import("eslint-plugin-react-hooks")).default,
+      "react-native": (await import("eslint-plugin-react-native")).default,
     },
     settings: {
       react: {
@@ -49,14 +34,14 @@ export default [
     rules: {
       "react/react-in-jsx-scope": "off", // Not needed in React 19+
       "react/prop-types": "off", // We're using TypeScript
+      "no-undef": "off", // TypeScript handles this better
     },
   },
   {
     files: ["**/*.ts", "**/*.tsx"],
     rules: {
-      // TypeScript-specific rules
       "@typescript-eslint/explicit-module-boundary-types": "warn",
       "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     },
-  },
-];
+  }
+);

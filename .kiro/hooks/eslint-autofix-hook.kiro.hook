@@ -1,0 +1,20 @@
+{
+  "enabled": true,
+  "name": "ESLint Auto-fix on Save",
+  "description": "Automatically runs ESLint with auto-fix when JavaScript or TypeScript files are saved, reports remaining issues, and suggests fixes for complex problems",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.mjs"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A JavaScript/TypeScript file was just saved. Please:\n\n1. Run ESLint with auto-fix on this file using the appropriate eslint.config.mjs for the project\n2. Report any remaining linting issues that couldn't be fixed automatically\n3. For each complex issue that remains, suggest a specific code fix with explanation\n4. If no issues are found, confirm the file passes ESLint standards\n\nFile path: {{filePath}}"
+  }
+}

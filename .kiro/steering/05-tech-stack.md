@@ -120,8 +120,12 @@ This steering file provides a comprehensive overview of the technology stack use
 
 - **TypeScript**: Latest stable version
   - For type safety across the project
-- **ESLint**: Latest stable version (inferred)
+- **ESLint**: Version 9.31.0
   - For code linting and enforcing coding standards
+  - Using flat configuration format (eslint.config.mjs)
+  - Integrated with unified typescript-eslint v8 package
+  - Uses the modern tseslint.config() approach (no separate parser/plugin packages needed)
+  - Configured with type-aware linting rules and Project Service API
 - **Prettier**: Latest stable version (inferred)
   - For code formatting
 - **NPM/Yarn**: Latest stable version (inferred)
