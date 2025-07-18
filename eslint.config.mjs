@@ -1,23 +1,20 @@
 // eslint.config.mjs
-import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended
-});
-
-export default [
-  // Global base configuration for all JavaScript/TypeScript files
-  js.configs.recommended,
+export default tseslint.config(
+  // Base ESLint recommended configuration
+  eslint.configs.recommended,
+  
+  // TypeScript ESLint recommended configuration
+  tseslint.configs.recommended,
+  
+  // Common ignores for all packages
   {
     ignores: ["**/node_modules/**", "**/dist/**", "**/.next/**"],
   },
+  
+  // Common configuration for all JavaScript/TypeScript files
   {
     files: ["**/*.js", "**/*.mjs", "**/*.cjs", "**/*.jsx", "**/*.ts", "**/*.tsx"],
     languageOptions: {
@@ -25,7 +22,7 @@ export default [
       sourceType: "module",
     },
     linterOptions: {
-      reportUnusedDisableDirectives: true,
+      reportUnusedDisableDirectives: "error",
     },
     rules: {
       // Common rules for all JavaScript/TypeScript files
@@ -38,8 +35,8 @@ export default [
       }],
     },
   },
+  
   // TypeScript-specific configuration
-  ...compat.extends("plugin:@typescript-eslint/recommended"),
   {
     files: ["**/*.ts", "**/*.tsx"],
     rules: {
@@ -55,5 +52,5 @@ export default [
       }],
       "@typescript-eslint/no-explicit-any": "warn",
     },
-  },
-];
+  }
+);

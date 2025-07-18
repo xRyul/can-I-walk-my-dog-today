@@ -7,29 +7,29 @@
   - Add the unified typescript-eslint package to all packages
   - _Requirements: 1.1_
 
-- [ ] 2. Update root ESLint configuration
+- [x] 2. Update root ESLint configuration
 
-  - [ ] 2.1 Create new root eslint.config.mjs using tseslint.config()
+  - [x] 2.1 Create new root eslint.config.mjs using tseslint.config()
 
     - Convert from FlatCompat to the unified typescript-eslint approach
     - Configure common rules and settings
     - Set up proper ignores for common directories
     - _Requirements: 1.3, 4.1, 4.3_
 
-  - [ ] 2.2 Update root package.json dependencies
+  - [x] 2.2 Update root package.json dependencies
     - Remove individual typescript-eslint packages
     - Add the unified typescript-eslint package
     - _Requirements: 1.1, 1.2_
 
-- [ ] 3. Update shared package ESLint configuration
+- [x] 3. Update shared package ESLint configuration
 
-  - [ ] 3.1 Update shared package dependencies
+  - [x] 3.1 Update shared package dependencies
 
     - Replace individual typescript-eslint packages with the unified package
     - Ensure ESLint v9.31.0 is specified
     - _Requirements: 1.1, 1.2_
 
-  - [ ] 3.2 Create new eslint.config.mjs for shared package
+  - [x] 3.2 Create new eslint.config.mjs for shared package
     - Use tseslint.config() helper function
     - Include type-checked rules (recommendedTypeChecked, stylisticTypeChecked)
     - Configure Project Service API
