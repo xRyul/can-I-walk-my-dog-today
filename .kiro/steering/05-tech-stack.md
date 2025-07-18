@@ -126,6 +126,12 @@ This steering file provides a comprehensive overview of the technology stack use
   - Integrated with unified typescript-eslint v8 package
   - Uses the modern tseslint.config() approach (no separate parser/plugin packages needed)
   - Configured with type-aware linting rules and Project Service API
+  - Hierarchical configuration with:
+    - Root-level configuration providing common rules for all packages
+    - Package-specific configurations extending the root configuration
+    - Framework-specific rules preserved (Next.js, React Native)
+  - Standardized across all packages (web, mobile, shared)
+  - Updated whenever ESLint configurations change
 - **Prettier**: Latest stable version (inferred)
   - For code formatting
 - **NPM/Yarn**: Latest stable version (inferred)
@@ -146,6 +152,50 @@ This steering file provides a comprehensive overview of the technology stack use
 - Regularly check for security vulnerabilities in dependencies
 - Use Context7 MCP to verify that tools and libraries are up-to-date
 - Document any version constraints or compatibility issues in this file
+
+## ESLint Configuration Approach
+
+The project uses a standardized ESLint configuration approach across all packages:
+
+### Configuration Structure
+
+- **Root Configuration**: Located at `eslint.config.mjs` in the project root
+  - Provides base rules and settings common to all packages
+  - Configures ignores for common directories (node_modules, dist, .next)
+  - Uses the unified typescript-eslint package
+
+- **Package-Specific Configurations**: Located in each package directory
+  - Web package: `packages/web/eslint.config.mjs`
+  - Mobile package: `packages/mobile/eslint.config.mjs`
+  - Shared package: `packages/shared/eslint.config.mjs`
+  - Each extends the root configuration and adds package-specific rules
+
+### Key Features
+
+- **TypeScript Integration**:
+  - All TypeScript files are linted with type-checked rules
+  - Uses Project Service API for better TypeScript integration
+  - Properly configured with appropriate tsconfig references
+
+- **Framework-Specific Rules**:
+  - Next.js-specific rules preserved in the web package
+  - React Native-specific rules preserved in the mobile package
+  - Package-specific rules properly integrated with the standardized configuration
+
+- **Maintenance**:
+  - Common rules defined in one place (root configuration)
+  - Package-specific configurations clearly show which rules extend or override the root
+  - Documentation updated whenever ESLint configurations change
+
+### Adding New Packages
+
+When adding a new package to the project:
+
+1. Ensure it uses ESLint v9.31.0
+2. Add the unified typescript-eslint package as a dependency
+3. Create an `eslint.config.mjs` file that extends the root configuration
+4. Configure package-specific rules as needed
+5. Include type-checked rules if the package uses TypeScript
 
 ## Adding New Technologies
 
