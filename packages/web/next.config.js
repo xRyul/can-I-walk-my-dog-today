@@ -1,3 +1,4 @@
+/* eslint-env node */
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -11,6 +12,8 @@ const nextConfig = {
   serverRuntimeConfig: {
     runtime: 'edge',
   }
-}
+};
 
-module.exports = nextConfig
+// CommonJS export
+// eslint-disable-next-line no-undef
+module.exports = nextConfig;

@@ -54,6 +54,19 @@
       "autoApprove": [
         "get_file_contents"
       ]
+    },
+    "eslint": {
+      "command": "npx",
+      "args": [
+        "@eslint/mcp@latest"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "lint-files"
+      ]
     }
   }
 }

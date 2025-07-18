@@ -13,13 +13,19 @@
     "test": "npm run test:web && npm run test:mobile",
     "test:web": "cd packages/web && npm test",
     "test:mobile": "cd packages/mobile && npm test",
-    "lint": "npm run lint:web && npm run lint:mobile && npm run lint:shared",
-    "lint:web": "cd packages/web && npm run lint",
-    "lint:mobile": "cd packages/mobile && npx tsc --noEmit",
-    "lint:shared": "cd packages/shared && npx tsc --noEmit",
-    "typecheck": "npm run lint:mobile && npm run lint:shared"
+    "lint": "eslint .",
+    "lint:web": "cd packages/web && eslint .",
+    "lint:mobile": "cd packages/mobile && eslint . && tsc --noEmit",
+    "lint:shared": "cd packages/shared && eslint . && tsc --noEmit",
+    "typecheck": "npm run lint:mobile && npm run lint:shared",
+    "fix": "eslint . --fix"
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0"
   }
 }

@@ -6,7 +6,7 @@
 
 import { 
   BaseWeatherService, 
-  IWeatherService, 
+  // IWeatherService is not used in this file
   WeatherServiceOptions,
   WeatherServiceResponse,
   WeatherServiceErrorType

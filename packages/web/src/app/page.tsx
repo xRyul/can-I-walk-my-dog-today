@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type {
-  WeatherData,
+  // WeatherData is not used directly in this file
   DogWalkingRecommendation,
 } from "@can-i-walk-my-dog-today/shared";
 
